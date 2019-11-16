@@ -73,7 +73,7 @@ function doInstruction() {
 		case '>':                                                                                     // increment the data pointer
 			pointer++;
 			if (pointer > memLen) {                                                                   // if we have exceeded the memory space
-				console.error('\n\nFatal! Pointer exceeded memory length ('+ memLen +')\nHalting!');
+				console.error('\n\nFatal! Pointer exceeded memory length ('+ memLen +') at pc='+ programCounter +'\nHalting!');
 				process.exit();
 			}
 			break;
@@ -81,7 +81,7 @@ function doInstruction() {
 		case '<':                                                         // decrement the data pointer
 			pointer--;
 			if (pointer < 0) {                                            // if we have exceeded the memory space
-				console.error('\n\nFatal! Pointer set to -1\nHalting!');
+				console.error('\n\nFatal! Pointer set to -1 at pc='+ programCounter +'\nHalting!');
 				process.exit();
 			}
 			break;
