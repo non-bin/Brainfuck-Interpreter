@@ -15,7 +15,20 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const fs = require('fs');
-const program = fs.readFileSync(process.argv[2], 'utf8')  // read the input program
+const program = fs.readFileSync(process.argv[process.argv.length-1], 'utf8')  // read the input program
+
+var outputType = 'c';  // what format to output in (c: char, i: int, x: hex)
+
+for (let i = 0; i < process.argv.length; i++) {
+	const arg = process.argv[i];
+	if (arg[1] == 'o') {
+		outputType = process.argv[i+1];
+		if (!(outputType == 'c' || outputType == 'i' || outputType == 'x')) {
+			console.error('\n\nOutput format must be one of c: char, i: int, x: hex. "'+ outputType +'" is invalid. \nDefaulting to c.');
+			outputType = 'c';
+		}
+	}
+}
 
 var stdin = process.stdin;  // set up for user input
 stdin.setRawMode(true);
@@ -73,8 +86,20 @@ function doInstruction() {
 			}
 			break;
 
-		case '.':                                                        // output the byte at the data pointer
-			process.stdout.write(String.fromCharCode(memory[pointer]));
+		case '.':                                                                // output the byte at the data pointer
+			switch (outputType) {
+				case 'x':
+					process.stdout.write(memory[pointer].toString(16)+'\n');     // as hex
+					break;
+
+				case 'i':
+					process.stdout.write(memory[pointer]+'\n');                  // as an int
+					break;
+
+				default:
+					process.stdout.write(String.fromCharCode(memory[pointer]));  // as a char
+					break;
+			}
 			break;
 
 		case ',':                                             // accept one byte of input, storing its value in the byte at the data pointer
