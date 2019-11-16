@@ -165,7 +165,6 @@ function continueExecution() {
 function incrementProgramCounter() {
 	programCounter++;                        // increment the program counter
 	if (programCounter >= program.length) {  // if we've reached the end
-		process.stdout.write('\n');
 		process.exit();                      // stop
 	}
 }
